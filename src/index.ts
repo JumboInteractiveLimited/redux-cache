@@ -1,0 +1,1 @@
+export { generateCacheTTL } from "./generateCacheTTL";

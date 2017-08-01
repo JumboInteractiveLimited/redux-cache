@@ -1,0 +1,43 @@
+{
+	"name": "redux-cache",
+	"version": "0.0.1",
+	"description": "Client side TTL caching strategy for redux applications",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"test": "jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JumboInteractiveLimited/redux-cache.git"
+	},
+	"keywords": [
+		"redux",
+		"cache",
+		"client",
+		"ttl"
+	],
+	"author": "Patrick Gordon <pgord1@gmail.com> (http://patrick-gordon.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JumboInteractiveLimited/redux-cache/issues"
+	},
+	"homepage": "https://github.com/JumboInteractiveLimited/redux-cache#readme",
+	"devDependencies": {
+		"@types/jest": "20.0.5",
+		"jest": "20.0.4",
+		"ts-jest": "20.0.7",
+		"typescript": "2.4.2"
+	},
+	"jest": {
+		"transform": {
+			".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+		},
+		"testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js"
+		]
+	}
+}
