@@ -1,7 +1,14 @@
-import { generateCacheTTL } from "../generateCacheTTL";
+var MockDate = require("mockdate");
+import generateCacheTTL from "../generateCacheTTL";
 import { DEFAULT_DURATION_MS } from "../constants";
 
-Date.now = jest.fn(() => 0);
+beforeEach(() => {
+	MockDate.set(0);
+})
+
+afterEach(() => {
+	MockDate.reset();
+});
 
 it("returns a TTL using the default duration if no duration parameter is provided", () => {
 	var cacheUntil = generateCacheTTL();

@@ -5,7 +5,8 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"test": "jest"
+		"test": "jest",
+		"test:watch": "jest --watch"
 	},
 	"repository": {
 		"type": "git",
@@ -25,7 +26,9 @@
 	"homepage": "https://github.com/JumboInteractiveLimited/redux-cache#readme",
 	"devDependencies": {
 		"@types/jest": "20.0.5",
+		"@types/node": "^8.0.19",
 		"jest": "20.0.4",
+		"mockdate": "^2.0.1",
 		"ts-jest": "20.0.7",
 		"typescript": "2.4.2"
 	},

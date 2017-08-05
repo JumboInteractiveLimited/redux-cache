@@ -4,7 +4,13 @@
 		"target": "es5",
 		"declaration": true,
 		"outDir": "./lib",
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"types": [
+			"node"
+		],
+		"typeRoots": [
+			"node_modules/@types"
+		]
 	},
 	"include": [
 		"src/**/*"
