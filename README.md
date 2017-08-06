@@ -1,11 +1,19 @@
 # redux-cache
-_purpose of lib goes here_
+*This library is a WIP. Will be pushed to NPM soon.*
+
+This library provides an easy to use client side TTL caching strategy for redux applications.
+
+Often, it is unnecessary to refetch data from an API if we know that it is unlikely to change within a certain period. By not fetching the data we are being friendly to mobile data users, limiting unnecessary API calls, and minimizing re-renders of applications due to state updates.
 
 ## Installation
-npm install -s redux-cache
+**Note:** Current redux-cache package is an un-maintained library. This will soon be pushed.
+
+~~`npm install -s redux-cache`~~
 
 ## Usage
-This package consists of several utilities.
+Add the store enhancer (`cacheEnhancer`) to your redux store. Example:
+
+// WIP
 
 1. A store enhancer - `cacheEnhancer()`
 1. A TTL generator - `generateCacheTTL()`
