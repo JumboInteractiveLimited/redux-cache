@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/JumboInteractiveLimited/redux-cache.svg?branch=master)](https://travis-ci.org/JumboInteractiveLimited/redux-cache)
 # redux-cache
 *This library is a WIP. Will be pushed to NPM soon.*
 

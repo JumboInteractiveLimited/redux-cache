@@ -1,11 +1,11 @@
 {
 	"name": "redux-cache",
-	"version": "0.0.1",
+	"version": "0.2.0",
 	"description": "Client side TTL caching strategy for redux applications",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"test": "jest",
+		"test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
 		"test:watch": "jest --watch"
 	},
 	"repository": {
@@ -27,6 +27,7 @@
 	"devDependencies": {
 		"@types/jest": "20.0.5",
 		"@types/node": "^8.0.19",
+		"coveralls": "^2.13.1",
 		"jest": "20.0.4",
 		"mockdate": "^2.0.1",
 		"ts-jest": "20.0.7",
