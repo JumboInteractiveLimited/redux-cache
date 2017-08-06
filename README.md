@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JumboInteractiveLimited/redux-cache.svg?branch=master)](https://travis-ci.org/JumboInteractiveLimited/redux-cache)
+[![Build Status](https://travis-ci.org/JumboInteractiveLimited/redux-cache.svg?branch=master)](https://travis-ci.org/JumboInteractiveLimited/redux-cache) [![Coverage Status](https://coveralls.io/repos/github/JumboInteractiveLimited/redux-cache/badge.svg?branch=master)](https://coveralls.io/github/JumboInteractiveLimited/redux-cache?branch=master)
 # redux-cache
 *This library is a WIP. Will be pushed to NPM soon.*
 
