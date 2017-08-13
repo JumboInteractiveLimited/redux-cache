@@ -1,4 +1,5 @@
 var MockDate = require("mockdate");
+
 import checkCacheValid, { State } from "../checkCacheValid";
 import { DEFAULT_KEY } from "../constants";
 

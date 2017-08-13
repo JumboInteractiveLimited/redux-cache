@@ -1,7 +1,7 @@
 import { DEFAULT_KEY } from "./constants";
 
 export interface State {
-	"DEFAULT_KEY"?: number,
+	DEFAULT_KEY?: number | null | undefined,
 	[x: string]: any
 }
 

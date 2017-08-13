@@ -1,13 +1,9 @@
-const INVALIDATE_ACTION = "@@redux-cache/INVALIDATE_CACHE";
-
-export interface Reducers {
-	[index: number]: string
-}
+export const INVALIDATE_CACHE = "@@redux-cache/INVALIDATE_CACHE";
 
 export interface InvalidateCacheAction {
 	type: string,
 	payload: {
-		reducers: Reducers
+		reducers: string[]
 	}
 }
 
@@ -17,14 +13,19 @@ export interface InvalidateCacheAction {
  * @param {string[]} [reducersToInvalidate=[]] List of reducers to invalidate
  * @returns {InvalidateCacheAction}
  */
-export const invalidateCache = (reducersToInvalidate: Reducers | string = []): InvalidateCacheAction => {
-	let reducers = reducersToInvalidate;
+export const invalidateCache = (reducersToInvalidate: string[] | string = []): InvalidateCacheAction => {
+	let reducers;
+
+	if (reducersToInvalidate instanceof Array) {
+		reducers = reducersToInvalidate;
+	}
+
 	if (typeof reducersToInvalidate === "string") {
 		reducers = [reducersToInvalidate];
 	}
 
 	return {
-		type: INVALIDATE_ACTION,
+		type: INVALIDATE_CACHE,
 		payload: {
 			reducers
 		}
