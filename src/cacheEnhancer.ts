@@ -19,14 +19,26 @@ const logResult = (name: string, array: string[]): void => {
 	console.log("redux-cache: %s: %s", name, array.join(", ") || "none found");
 };
 
-export const updateState = (reducersToInvalidate, currentState, { log = false }) => {
+/**
+ * // TODO: Add info here
+ * 
+ * @param {string[]} reducersToInvalidate - List of reducers to invalidate
+ * @param {object} currentState - The current and already reduced state.
+ * @param {object} [config={}] - Configuration options
+ * @param {boolean} [config.log=false] - Whether or not to output log information. Useful for debugging.
+ */
+export const updateState = (reducersToInvalidate, currentState, config) => {
+	const { log = false } = config;
 	const newState = { ...currentState };
 	const stateKeys = Object.keys(newState);
+
+	// TODO: We should really return early from this fn if matchedReducers or cacheEnabledReducers
+	// is empty. Otherwise we're just reducing/filtering on empty arrays for no reason.
 
 	// We filter to those reducers which exist in the application state tree
 	const matchedReducers = reducersToInvalidate.filter(reducerKey => {
 		const matched = (stateKeys.indexOf(reducerKey) !== -1);
-		if (!matched) { console.log("redux-cache: did not match %s reducer to state tree", reducerKey); }
+		if (!matched && log) { console.log("redux-cache: did not match %s reducer to state tree", reducerKey); }
 		return matched;
 	});
 	if (log) { logResult("matchedReducers", matchedReducers); }
@@ -64,6 +76,7 @@ export const liftReducer = (reducer, config) => (state, action) => {
 }
 
 /**
+ * // TODO: add info here
  * 
  * @param config 
  * @returns {Object} - returns the enhanced store
