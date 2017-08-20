@@ -7,12 +7,13 @@ export interface Store {
 }
 
 export interface State {
-	DEFAULT_KEY?: number | null | undefined
-	[x: string]: any,
+	DEFAULT_KEY?: number | null | undefined,
+	[x: string]: any
 }
 
 export interface CacheEnhancerConfig {
-	log?: boolean
+	log?: boolean,
+	cacheKey?: string
 }
 
 const logResult = (name: string, array: string[]): void => {
@@ -20,20 +21,19 @@ const logResult = (name: string, array: string[]): void => {
 };
 
 /**
- * // TODO: Add info here
+ * This fn will handle invalidating the reducers you specify. It returns the updated state with the cache
+ * values set to null.
  * 
  * @param {string[]} reducersToInvalidate - List of reducers to invalidate
  * @param {object} currentState - The current and already reduced state.
  * @param {object} [config={}] - Configuration options
  * @param {boolean} [config.log=false] - Whether or not to output log information. Useful for debugging.
+ * @param {string} [config.cacheKey=DEFAULT_KEY] - The cache key to use instead of the DEFAULT_KEY
  */
 export const updateState = (reducersToInvalidate, currentState, config) => {
-	const { log = false } = config;
+	const { log = false, cacheKey = DEFAULT_KEY } = config;
 	const newState = { ...currentState };
 	const stateKeys = Object.keys(newState);
-
-	// TODO: We should really return early from this fn if matchedReducers or cacheEnabledReducers
-	// is empty. Otherwise we're just reducing/filtering on empty arrays for no reason.
 
 	// We filter to those reducers which exist in the application state tree
 	const matchedReducers = reducersToInvalidate.filter(reducerKey => {
@@ -45,16 +45,16 @@ export const updateState = (reducersToInvalidate, currentState, config) => {
 
 	// We filter those existing reducers down to those which actually have a the cache key.
 	const cacheEnabledReducers = matchedReducers.filter(reducerKey => {
-		return newState && newState[reducerKey] && newState[reducerKey][DEFAULT_KEY];
+		return newState && newState[reducerKey] && newState[reducerKey][cacheKey];
 	});
 	if (log) { logResult("cacheEnabledReducers", cacheEnabledReducers); }
 
 	// We are invalidating the cached reducers by setting the value for the cache key to null.
 	// Don't fret -- they'll get a new and improved value for the cache key again when the successful action comes through.
-	cacheEnabledReducers.forEach(reducerKey => { newState[reducerKey][DEFAULT_KEY] = null; });
+	cacheEnabledReducers.forEach(reducerKey => { newState[reducerKey][cacheKey] = null; });
 	if (log) {
 		if (cacheEnabledReducers.length > 0) {
-			console.log("redux-cache: Set %s to null for following reducers: %s", DEFAULT_KEY, cacheEnabledReducers.join(", "));
+			console.log("redux-cache: Set %s to null for following reducers: %s", cacheKey, cacheEnabledReducers.join(", "));
 		} else {
 			console.log("redux-cache: No cached reducers to update");
 		}
@@ -76,9 +76,9 @@ export const liftReducer = (reducer, config) => (state, action) => {
 }
 
 /**
- * // TODO: add info here
+ * This is the store enhancer that you will add when you configureStore.
  * 
- * @param config 
+ * @param {CacheEnhancerConfig} [config={}]
  * @returns {Object} - returns the enhanced store
  */
 const cacheEnhancer = (config: CacheEnhancerConfig = {}) => {

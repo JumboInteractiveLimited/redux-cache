@@ -74,7 +74,7 @@ describe('updateState', () => {
 			}
 		}
 
-		const newState = updateState(["notCacheEnabled"], modifiedState, {})
+		const newState = updateState(["notCacheEnabled"], modifiedState, {});
 		expect(newState.notCacheEnabled).not.toHaveProperty(DEFAULT_KEY);
 	});
 
@@ -86,7 +86,19 @@ describe('updateState', () => {
 			}
 		}
 
-		const newState = updateState(["myReducer", "doesntMatch"], modifiedState, {})
+		const newState = updateState(["myReducer", "doesntMatch"], modifiedState, {});
 		expect(newState).not.toHaveProperty("doesntMatch");
+	});
+
+	it("should use the provided cacheKey if given as a parameter", () => {
+		const modifiedState = {
+			myReducer: {
+				myDifferentCacheKey: 2000,
+				myValue: "someValue"
+			}
+		}
+
+		const newState = updateState(["myReducer"], modifiedState, { cacheKey: "myDifferentCacheKey" });
+		expect(newState.myReducer).toHaveProperty("myDifferentCacheKey", null)
 	});
 });
