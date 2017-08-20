@@ -44,6 +44,8 @@
 			"ts",
 			"tsx",
 			"js"
-		]
+		],
+		"testPathIgnorePatterns": ["/node_modules/", "/example/"],
+		"coveragePathIgnorePatterns": ["/node_modules/", "/example/"]
 	}
 }

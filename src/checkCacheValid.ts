@@ -9,12 +9,13 @@ export interface State {
  * Checks if the cache TTL is still valid.
  * 
  * @param {function} getState 
+ * @param {string} reducerKey
  * @param {string} [cacheKey=DEFAULT_KEY]
  * @returns {boolean}
  */
-export const checkCacheValid = (getState: () => State, cacheKey: string = DEFAULT_KEY): boolean => {
+export const checkCacheValid = (getState: () => State, reducerKey: string, cacheKey: string = DEFAULT_KEY): boolean => {
 	const state = getState();
-	const cacheUntil: number = state[cacheKey];
+	const cacheUntil: number = state && state[reducerKey] && state[reducerKey][cacheKey];
 	if (!cacheUntil) {
 		return false
 	}
