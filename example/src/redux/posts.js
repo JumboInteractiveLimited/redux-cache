@@ -2,9 +2,9 @@ import { DEFAULT_KEY } from "redux-cache";
 
 const FETCH_POSTS_REQUEST = "Posts.FETCH_POSTS_REQUEST";
 const FETCH_POSTS_SUCCESS = "Posts.FETCH_POSTS_SUCCESS";
-const FETCH_POSTS_FAILURE = "Posts.FETCH_POSTS_FAILURE";
+// const FETCH_POSTS_FAILURE = "Posts.FETCH_POSTS_FAILURE";
 
-const getPosts = () => (dispatch) => {
+export const getPosts = () => (dispatch) => {
 	dispatch({
 		type: FETCH_POSTS_REQUEST
 	});
@@ -26,7 +26,7 @@ const initialState = {
 	posts: []
 }
 
-const postReducer = (state, action) => {
+const postReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case FETCH_POSTS_SUCCESS: {
 			console.log("lit");

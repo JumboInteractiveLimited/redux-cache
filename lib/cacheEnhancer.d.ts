@@ -22,3 +22,10 @@ export interface CacheEnhancerConfig {
  */
 export declare const updateState: (reducersToInvalidate: any, currentState: any, config: any) => any;
 export declare const liftReducer: (reducer: any, config: any) => (state: any, action: any) => any;
+/**
+ * This is the store enhancer that you will add when you configureStore.
+ *
+ * @param {CacheEnhancerConfig} [config={}]
+ * @returns {Object} - returns the enhanced store
+ */
+export declare const cacheEnhancer: (config?: CacheEnhancerConfig) => (createStore: any) => (rootReducer: any, initialState: any, enhancer: any) => any;

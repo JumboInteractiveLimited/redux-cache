@@ -5212,9 +5212,9 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-cache@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/redux-cache/-/redux-cache-0.2.0.tgz#3d4df971cf836a4ccbb479b000bc4ba1c4876a5e"
+redux-cache@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/redux-cache/-/redux-cache-0.2.1.tgz#88da685fae53c89f21622ca16e2a7ca490bc0d9d"
 
 redux-thunk@^2.2.0:
   version "2.2.0"

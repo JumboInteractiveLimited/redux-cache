@@ -81,7 +81,7 @@ export const liftReducer = (reducer, config) => (state, action) => {
  * @param {CacheEnhancerConfig} [config={}]
  * @returns {Object} - returns the enhanced store
  */
-const cacheEnhancer = (config: CacheEnhancerConfig = {}) => {
+export const cacheEnhancer = (config: CacheEnhancerConfig = {}) => {
 	return (createStore) => (rootReducer, initialState, enhancer) => {
 		const store = createStore(liftReducer(rootReducer, config), initialState, enhancer);
 
