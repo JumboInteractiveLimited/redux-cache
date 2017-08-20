@@ -1,11 +1,13 @@
 {
 	"name": "redux-cache",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Client side TTL caching strategy for redux applications",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"scripts": {
+		"prepublish": "npm run build",
 		"test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+		"build": "tsc",
 		"test:watch": "jest --watch"
 	},
 	"repository": {
