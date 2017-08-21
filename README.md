@@ -32,7 +32,7 @@ This will enhance your store so that whenever you dispatch the invalidateCache a
 ### 2. Set up your reducer
 Included are a couple of utilities for setting up your reducer to make it "cache enabled".
 
-Firstly, the `DEFAULT_KEY` is what `redux-cache` will use for storing and clearing cache valeus unless told to use an additional cache key. Secondly is the `generateCacheTTL` function which will create a timestamp for you.
+Firstly, the `DEFAULT_KEY` is what `redux-cache` will use for storing and clearing cache values unless told to use an additional cache key. Secondly is the `generateCacheTTL` function which will create a timestamp for you.
 
 In your reducer:
 ```javascript
