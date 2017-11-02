@@ -38,5 +38,18 @@ it("returns false if the TTL is less than the current date and time", () => {
 it("uses the provided cache key to check if one is provided as a parameter", () => {
 	getState = () => ({ posts: { myOwnKey: 4000 }});
 	expect(checkCacheValid(getState, "posts")).toBe(false);
-	expect(checkCacheValid(getState, "posts", "myOwnKey")).toBe(true);
+	expect(checkCacheValid(getState, "posts", { cacheKey: "myOwnKey" })).toBe(true);
 });
+
+it("should use the provided accessStrategy to check the cache key if one is provided as a parameter", () => {
+	getState = () => ({
+		posts: {
+			nestedKey: {
+				[DEFAULT_KEY]: 500
+			}
+		}
+	})
+
+	const accessStrategy = (state, reducerKey, cacheKey) => state[reducerKey].nestedKey[cacheKey]
+	expect(checkCacheValid(getState, "posts", { accessStrategy }))
+})

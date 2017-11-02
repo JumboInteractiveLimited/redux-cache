@@ -118,11 +118,13 @@ invalidateCache("posts");
 * arguments: 
   * **duration** - *number* - default: [`DEFAULT_DURATION_MS`](#constants). A number representing miliseconds. To be added to the current time.
 
-### `checkCacheValid(getState, reducerKey, [cacheKey])`
+### `checkCacheValid(getState, reducerKey, [config])`
 * arguments:
   * **getState** - *function* - The getState function provided by using `redux-thunk` which will be used to get the application state
   * **reducerKey** - *string* - The key of the reducer to check whether the cache is still valid
-  * **cacheKey** - *string* - default: [`DEFAULT_KEY`](#constants). The cacheKey to be checking.
+  * **config**
+  	* cacheKey - *string* - default: [`DEFAULT_KEY`](#constants). The cacheKey to be checking.
+	* accessStrategy - *function* - default: (state, reducerKey, cacheKey) => state[reducerKey][cacheKey]. Use this to overide the way in which the cacheKey is checked. This allows for greater configurability for applying the caching strategy to nested items in your reducer.
 
 ### `invalidateCache(reducers)`
 * arguments

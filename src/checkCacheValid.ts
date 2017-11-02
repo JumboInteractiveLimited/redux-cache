@@ -5,28 +5,30 @@ export interface State {
 	[x: string]: any
 }
 
-/**
- * Checks if the cache TTL is still valid.
- * 
- * @param {function} getState 
- * @param {string} reducerKey
- * @param {string} [cacheKey=DEFAULT_KEY]
- * @returns {boolean}
- */
-export const checkCacheValid = (getState: () => State, reducerKey: string, cacheKey: string = DEFAULT_KEY): boolean => {
+export type AccessStrategy = (state: State, reducerKey: string, cacheKey: string) => number | null | undefined;
+const defaultAccessStrategy: AccessStrategy = (state, reducerKey, cacheKey) => {
+	return state && state[reducerKey] && state[reducerKey][cacheKey];
+}
+
+export type GetState = () => State;
+export type Args = {
+	cacheKey?: string,
+	accessStrategy?: AccessStrategy
+}
+
+export const checkCacheValid = (getState: GetState, reducerKey: string, args: Args = {}): boolean => {
+	const { 
+		cacheKey = DEFAULT_KEY, 
+		accessStrategy = defaultAccessStrategy 
+	} = args;
+
 	const state = getState();
-	const cacheUntil: number = state && state[reducerKey] && state[reducerKey][cacheKey];
-	if (!cacheUntil) {
-		return false
-	}
 
+	const cacheUntil = accessStrategy(state, reducerKey, cacheKey);
+	
 	const currentTime: number = Date.now();
-	if (cacheUntil > currentTime) {
-		return true
-	}
-
-	return false;
-
+	
+	return !!(cacheUntil > currentTime);
 };
 
 export default checkCacheValid;
