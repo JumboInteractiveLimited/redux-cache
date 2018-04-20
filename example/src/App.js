@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import { invalidateCache } from 'redux-cache';
 
@@ -9,12 +10,12 @@ import './App.css';
 
 class App extends Component {
 	handleInvalidateClick = () => {
-		const { invalidateCache } = this.props;
+		const { actions: { invalidateCache } } = this.props;
 		invalidateCache("posts");
 	}
 
 	handleGetPosts = () => {
-		const { getPosts } = this.props;
+		const { actions: { getPosts } } = this.props;
 		getPosts();
 	}
 
@@ -72,9 +73,11 @@ const mapStateToProps = (state) => ({
 	callCount: state.posts.callCount
 });
 
-const mapDispatchToProps = {
-	getPosts: () => getPosts(),
-	invalidateCache: (cacheKeys) => invalidateCache(cacheKeys)
-};
+const mapDispatchToProps = (dispatch) => ({
+	actions: bindActionCreators({
+		getPosts,
+		invalidateCache
+	}, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
