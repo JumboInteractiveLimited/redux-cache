@@ -5,6 +5,7 @@
 		"declaration": true,
 		"outDir": "./lib",
 		"skipLibCheck": true,
+		"sourceMap": true,
 		"types": [
 			"node"
 		],

@@ -1,57 +1,63 @@
 {
-  "name": "redux-cache",
-  "version": "0.3.0",
-  "description": "Client side TTL caching strategy for redux applications",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "scripts": {
-    "prepublish": "npm run build",
-    "test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "build": "tsc",
-    "test:watch": "jest --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JumboInteractiveLimited/redux-cache.git"
-  },
-  "keywords": [
-    "redux",
-    "cache",
-    "client",
-    "ttl"
-  ],
-  "author": "Patrick Gordon <pgord1@gmail.com> (http://patrick-gordon.com/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/JumboInteractiveLimited/redux-cache/issues"
-  },
-  "homepage": "https://github.com/JumboInteractiveLimited/redux-cache#readme",
-  "devDependencies": {
-    "@types/jest": "20.0.5",
-    "@types/node": "^8.0.19",
-    "coveralls": "^2.13.1",
-    "jest": "20.0.4",
-    "mockdate": "^2.0.1",
-    "ts-jest": "20.0.7",
-    "typescript": "2.4.2"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/example/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/example/"
-    ]
-  }
+	"name": "redux-cache",
+	"version": "0.3.0",
+	"description": "Client side TTL caching strategy for redux applications",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"scripts": {
+		"prepublish": "npm run build",
+		"pretest": "tsc",
+		"test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+		"build": "tsc",
+		"test:watch": "jest --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JumboInteractiveLimited/redux-cache.git"
+	},
+	"keywords": [
+		"redux",
+		"cache",
+		"client",
+		"ttl"
+	],
+	"author": "Patrick Gordon <pgord1@gmail.com> (http://patrick-gordon.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JumboInteractiveLimited/redux-cache/issues"
+	},
+	"homepage": "https://github.com/JumboInteractiveLimited/redux-cache#readme",
+	"devDependencies": {
+		"@types/jest": "20.0.5",
+		"@types/node": "^8.0.19",
+		"coveralls": "^2.13.1",
+		"jest": "20.0.4",
+		"mockdate": "^2.0.1",
+		"ts-jest": "22.4.4",
+		"typescript": "2.4.2"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		],
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"/example/"
+		],
+		"coveragePathIgnorePatterns": [
+			"/node_modules/",
+			"/example/"
+		],
+		"collectCoverage": true,
+		"mapCoverage": true
+	}
 }
