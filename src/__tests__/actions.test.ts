@@ -1,10 +1,10 @@
+import { defaultAccessStrategy } from "../utils";
 import { invalidateCache } from "../actions";
 
 describe("invalidateCache", () => {
 	it("returns an empty array of reducers if none are provided as a parameter", () => {
 		const invalidateAction = invalidateCache();
 		expect(invalidateAction.payload.reducers).toEqual([]);
-
 	});
 
 	it("contains an array of reducers when provided as a parameter", () => {
@@ -17,5 +17,19 @@ describe("invalidateCache", () => {
 		const expected = ["myReducer"];
 		const invalidateAction = invalidateCache("myReducer");
 		expect(invalidateAction.payload.reducers).toEqual(expected);
+	});
+
+	it("should use the default access strategy if none is provided", () => {
+		const invalidateAction = invalidateCache("myReducer");
+		expect(invalidateAction.payload.accessStrategy).toEqual(defaultAccessStrategy);
+	});
+
+	it("should use the provided access strategy", () => {
+		const myAccessStrategy = (state, reducerKey, cacheKey) => {
+			return state && state[reducerKey].myKey && state[reducerKey].myKey[cacheKey]
+		};
+
+		const invalidateAction = invalidateCache("myReducer", myAccessStrategy);
+		expect(invalidateAction.payload.accessStrategy).toEqual(myAccessStrategy);
 	});
 });

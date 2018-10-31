@@ -1,6 +1,7 @@
 var MockDate = require("mockdate");
 
 import { buildCacheEnhancer, liftReducer, buildUpdateState } from "../cacheEnhancer";
+import { defaultAccessStrategy } from "../utils";
 import { INVALIDATE_CACHE } from "../actions";
 import { DEFAULT_KEY } from "../constants";
 
@@ -22,7 +23,8 @@ beforeEach(() => {
 	action = {
 		type: INVALIDATE_CACHE,
 		payload: {
-			reducers: ["myReducer"]
+			reducers: ["myReducer"],
+			accessStrategy: defaultAccessStrategy
 		}
 	};
 });
@@ -43,9 +45,9 @@ describe("cacheEnhancer:", () => {
 	const cacheEnhancer = buildCacheEnhancer(mockLiftReducer);
 
 	it("should call liftReducer with the root reducer and provided config", () => {
-	
+
 		cacheEnhancer(mockConfig)(mockCreateStore)(mockRootReducer, mockInitialState, mockEnhancer)
-		
+
 		const [liftReducerArgs] = mockLiftReducer.mock.calls;
 
 		expect(liftReducerArgs).toEqual([mockRootReducer, mockConfig])
@@ -66,13 +68,13 @@ describe("liftReducer:", () => {
 			action = {
 				type: "UNKNOWN_ACTION"
 			}
-	
+
 			liftReducer(reducer, {})(state, action);
 			const [reducerArgs] = reducer.mock.calls;
 			expect(reducerArgs).toEqual([state, action])
 		});
 	});
-	
+
 	describe("invalidate cache action:", () => {
 		it("should return the newState with the nullified cache key", () => {
 			reducer = (state, action) => state;
@@ -97,12 +99,12 @@ describe("updateState:", () => {
 	const updateState = buildUpdateState(logResultSpy, logGeneralSpy);
 
 	it("should update the state for cache enabled reducers that match", () => {
-		const newState = updateState(["myReducer"], state, {});
+		const newState = updateState(["myReducer"], defaultAccessStrategy, state, {});
 		expect(newState.myReducer[DEFAULT_KEY]).toBe(null);
 	});
 
 	it("should not mutate the current state", () => {
-		const newState = updateState(["myReducer"], state, {});
+		updateState(["myReducer"], defaultAccessStrategy, state, {});
 		expect(state.myReducer[DEFAULT_KEY]).toBe(2000);
 	});
 
@@ -114,7 +116,7 @@ describe("updateState:", () => {
 			}
 		}
 
-		const newState = updateState(["notCacheEnabled"], currentState, {});
+		const newState = updateState(["notCacheEnabled"], defaultAccessStrategy, currentState, {});
 		expect(newState.notCacheEnabled).not.toHaveProperty(DEFAULT_KEY);
 	});
 
@@ -126,7 +128,7 @@ describe("updateState:", () => {
 			}
 		}
 
-		const newState = updateState(["myReducer", "doesntMatch"], currentState, {} );
+		const newState = updateState(["myReducer", "doesntMatch"], defaultAccessStrategy, currentState, {} );
 		expect(newState).not.toHaveProperty("doesntMatch");
 	});
 
@@ -138,7 +140,7 @@ describe("updateState:", () => {
 			}
 		}
 
-		const newState = updateState(["myReducer"], currentState, { cacheKey: "myDifferentCacheKey" });
+		const newState = updateState(["myReducer"], defaultAccessStrategy, currentState, { cacheKey: "myDifferentCacheKey" });
 		expect(newState.myReducer).toHaveProperty("myDifferentCacheKey", null)
 	});
 
@@ -156,25 +158,25 @@ describe("updateState:", () => {
 		}
 
 		it("should not perform any logging if logging is not turned on:", () => {
-			const newState = updateState(["myReducer"], currentState, { log: false });
+			const newState = updateState(["myReducer"], defaultAccessStrategy, currentState, { log: false });
 			expect(logResultSpy.mock.calls.length).toBe(0);
 			expect(logGeneralSpy.mock.calls.length).toBe(0);
 		})
 
 		it("should log a result with the matched reducers", () => {
-			updateState(["myReducer"], currentState, { log: true });
+			updateState(["myReducer"], defaultAccessStrategy, currentState, { log: true });
 			const [matchedCallArgs] = logResultSpy.mock.calls;
 			expect(matchedCallArgs).toEqual(["matchedReducers", ["myReducer"]])
 		})
 
 		it("should log if it failed to match", () => {
-			updateState(["someFakeReducer"], currentState, { log: true })
+			updateState(["someFakeReducer"], defaultAccessStrategy, currentState, { log: true })
 			const [failedMatchArgs] = logGeneralSpy.mock.calls;
 			expect(failedMatchArgs).toEqual(["Did not match %s reducer to the state tree", "someFakeReducer"])
 		});
 
 		it("should log the cache enabled reducers", () => {
-			updateState(["myReducer"], currentState, { log: true });
+			updateState(["myReducer"], defaultAccessStrategy, currentState, { log: true });
 			const [matchedCallArgs, cacheEnabledCallArgs] = logResultSpy.mock.calls;
 			expect(cacheEnabledCallArgs).toEqual(["cacheEnabledReducers", ["myReducer"]])
 		});
