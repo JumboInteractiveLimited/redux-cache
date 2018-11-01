@@ -1,6 +1,5 @@
-// TODO: should this be commonized somewhere rather than duplicated in checkCacheValid.ts
 export interface State {
-	DEFAULT_KEY?: number | null | undefined,
+	cacheUntil?: number | null | undefined,
 	[x: string]: any
 }
 
@@ -8,4 +7,15 @@ export type AccessStrategy = (state: State, reducerKey: string, cacheKey: string
 
 export const defaultAccessStrategy: AccessStrategy = (state, reducerKey, cacheKey) => {
 	return state && state[reducerKey] && state[reducerKey][cacheKey];
+}
+
+export type InvalidateStrategy = (state: State, reducerKey: string, cacheKey: string) => State;
+
+export const defaultInvalidateStrategy: InvalidateStrategy = (state, reducerKey, cacheKey) => {
+	return {
+		[reducerKey]: {
+			...state[reducerKey],
+			[cacheKey]: null
+		}
+	}
 }

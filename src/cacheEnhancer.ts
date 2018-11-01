@@ -1,6 +1,6 @@
 import { DEFAULT_KEY } from "./constants";
 import { INVALIDATE_CACHE } from "./actions";
-import { AccessStrategy } from "./utils";
+import { AccessStrategy, InvalidateStrategy } from "./utils";
 
 export type Reducer = (state: State, action: any) => State;
 
@@ -35,6 +35,14 @@ const logGeneral: LogGeneral = (message, ...data) => {
 	console.log(`redux-cache: ${message}`, ...data)
 }
 
+interface UpdateStateArgs {
+	reducersToInvalidate: string[],
+	accessStrategy: AccessStrategy,
+	invalidateStrategy: InvalidateStrategy,
+	currentState: State,
+	config: CacheEnhancerConfig
+}
+
 /**
  * This fn will handle invalidating the reducers you specify. It returns the updated state with the cache
  * values set to null.
@@ -45,7 +53,15 @@ const logGeneral: LogGeneral = (message, ...data) => {
  * @param [config.log=false] Whether or not to output log information. Useful for debugging.
  * @param [config.cacheKey=DEFAULT_KEY] The cache key to use instead of the DEFAULT_KEY
  */
-export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGeneral) => (reducersToInvalidate: string[], accessStrategy: AccessStrategy, currentState: State, config: CacheEnhancerConfig): State => {
+export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGeneral) => (args: UpdateStateArgs): State => {
+	const {
+		reducersToInvalidate,
+		accessStrategy,
+		invalidateStrategy,
+		currentState,
+		config
+	} = args;
+
 	const { log = false, cacheKey = DEFAULT_KEY } = config;
 	const newState = { ...currentState };
 	const stateKeys = Object.keys(newState);
@@ -69,10 +85,7 @@ export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGenera
 	const updatedState = cacheEnabledReducers.reduce((prev, reducerKey) => {
 		return {
 			...prev,
-			[reducerKey]: {
-				...prev[reducerKey],
-				[cacheKey]: null
-			}
+			...invalidateStrategy(newState, reducerKey, cacheKey)
 		}
 	}, newState);
 
@@ -100,7 +113,15 @@ export const liftReducer: LiftReducer = (reducer, config) => (state, action) => 
 
 	const reducersToInvalidate = action.payload && action.payload.reducers || [];
 	const accessStrategy = action.payload && action.payload.accessStrategy;
-	const newState = updateState(reducersToInvalidate, accessStrategy, currentState, config);
+	const invalidateStrategy = action.payload && action.payload.invalidateStrategy;
+
+	const newState = updateState({
+		reducersToInvalidate,
+		accessStrategy,
+		invalidateStrategy,
+		currentState,
+		config
+	});
 
 	return newState;
 }

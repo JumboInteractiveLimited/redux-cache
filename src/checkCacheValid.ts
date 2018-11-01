@@ -2,7 +2,7 @@ import { DEFAULT_KEY } from "./constants";
 import { defaultAccessStrategy, AccessStrategy } from "./utils";
 
 export interface State {
-	DEFAULT_KEY?: number | null | undefined,
+	cacheUntil?: number | null | undefined,
 	[x: string]: any
 }
 
