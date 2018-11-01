@@ -16,7 +16,7 @@ export interface InvalidateCacheAction {
 	}
 }
 
-interface Args {
+export interface InvalidateCacheArgs {
 	accessStrategy?: AccessStrategy,
 	invalidateStrategy?: InvalidateStrategy
 }
@@ -28,7 +28,7 @@ interface Args {
  * @returns {InvalidateCacheAction}
  */
 
-export const invalidateCache = (reducersToInvalidate: string[] | string = [], args: Args = {}): InvalidateCacheAction => {
+export const invalidateCache = (reducersToInvalidate: string[] | string = [], args: InvalidateCacheArgs = {}): InvalidateCacheAction => {
 	const {
 		accessStrategy = defaultAccessStrategy,
 		invalidateStrategy = defaultInvalidateStrategy

@@ -35,7 +35,7 @@ const logGeneral: LogGeneral = (message, ...data) => {
 	console.log(`redux-cache: ${message}`, ...data)
 }
 
-interface UpdateStateArgs {
+export interface UpdateStateArgs {
 	reducersToInvalidate: string[],
 	accessStrategy: AccessStrategy,
 	invalidateStrategy: InvalidateStrategy,
