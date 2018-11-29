@@ -7,7 +7,9 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"types": [
-			"node"
+         "node",
+         "jasmine",
+         "jest"
 		],
 		"typeRoots": [
 			"node_modules/@types"
