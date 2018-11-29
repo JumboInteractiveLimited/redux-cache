@@ -115,7 +115,7 @@ describe("updateState:", () => {
 		}
 
 		const newState = updateState(["notCacheEnabled"], currentState, {});
-		expect(newState.notCacheEnabled).not.toHaveProperty(DEFAULT_KEY);
+		expect(newState.notCacheEnabled).not.hasOwnProperty(DEFAULT_KEY);
 	});
 
 	it("should ignore reducers that do not match", () => {
@@ -127,7 +127,7 @@ describe("updateState:", () => {
 		}
 
 		const newState = updateState(["myReducer", "doesntMatch"], currentState, {} );
-		expect(newState).not.toHaveProperty("doesntMatch");
+		expect(newState).not.hasOwnProperty("doesntMatch");
 	});
 
 	it("should use the provided cacheKey if given as a parameter", () => {
@@ -139,7 +139,8 @@ describe("updateState:", () => {
 		}
 
 		const newState = updateState(["myReducer"], currentState, { cacheKey: "myDifferentCacheKey" });
-		expect(newState.myReducer).toHaveProperty("myDifferentCacheKey", null)
+      expect(newState.myReducer).hasOwnProperty("myDifferentCacheKey");
+      expect(newState.myReducer.myDifferentCacheKey).toEqual(null);
 	});
 
 	describe("logging:", () => {
