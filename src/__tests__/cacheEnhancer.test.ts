@@ -137,7 +137,7 @@ describe("updateState:", () => {
 			config: {}
 		});
 
-		expect(newState.notCacheEnabled).not.toHaveProperty(DEFAULT_KEY);
+		expect(newState.notCacheEnabled).not.hasOwnProperty(DEFAULT_KEY);
 	});
 
 	it("should ignore reducers that do not match", () => {
@@ -156,7 +156,7 @@ describe("updateState:", () => {
 			config: {}
 		});
 
-		expect(newState).not.toHaveProperty("doesntMatch");
+		expect(newState).not.hasOwnProperty("doesntMatch");
 	});
 
 	it("should use the provided cacheKey if given as a parameter", () => {
@@ -175,7 +175,8 @@ describe("updateState:", () => {
 			config: { cacheKey: "myDifferentCacheKey" }
 		});
 
-		expect(newState.myReducer).toHaveProperty("myDifferentCacheKey", null)
+		expect(newState.myReducer).hasOwnProperty("myDifferentCacheKey");
+		expect(newState.myReducer.myDifferentCacheKey).toEqual(null);
 	});
 
 	it("should use the provided access strategy and invalidate strategy", () => {

@@ -28,13 +28,14 @@
 	},
 	"homepage": "https://github.com/JumboInteractiveLimited/redux-cache#readme",
 	"devDependencies": {
-		"@types/jest": "20.0.5",
-		"@types/node": "^8.0.19",
-		"coveralls": "^2.13.1",
-		"jest": "20.0.4",
-		"mockdate": "^2.0.1",
-		"ts-jest": "22.4.4",
-		"typescript": "2.4.2"
+		"@types/jasmine": "^3.3.0",
+		"@types/jest": "^23.3.10",
+		"@types/node": "^10.12.10",
+		"coveralls": "^3.0.2",
+		"jest": "^23.6.0",
+		"mockdate": "^2.0.2",
+		"ts-jest": "^23.10.5",
+		"typescript": "^3.1.6"
 	},
 	"jest": {
 		"transform": {
@@ -57,7 +58,6 @@
 			"/node_modules/",
 			"/example/"
 		],
-		"collectCoverage": true,
-		"mapCoverage": true
+		"collectCoverage": true
 	}
 }
