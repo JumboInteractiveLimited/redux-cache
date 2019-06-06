@@ -5,7 +5,7 @@
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"scripts": {
-		"prepublish": "npm run build",
+		"prepare": "npm run build",
 		"pretest": "tsc",
 		"test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
 		"build": "tsc",
@@ -32,7 +32,7 @@
 		"@types/jest": "^24.0.13",
 		"@types/node": "^12.0.6",
 		"coveralls": "^3.0.4",
-		"jest": "^24.8.0",
+		"jest": "^24.7.1",
 		"mockdate": "^2.0.2",
 		"ts-jest": "^24.0.2",
 		"typescript": "^3.5.1"
