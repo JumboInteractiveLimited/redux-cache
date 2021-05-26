@@ -1,13 +1,14 @@
 import { DEFAULT_KEY } from "./constants";
 import { INVALIDATE_CACHE } from "./actions";
+import { AccessStrategy, InvalidateStrategy } from "./utils";
 
 export type Reducer = (state: State, action: any) => State;
 
 export type ReplaceReducer = (reducer: Reducer) => ReplaceReducer;
 
 export interface Store {
-	[x: string]: any,
-	replaceReducer: ReplaceReducer
+	replaceReducer: ReplaceReducer,
+	[x: string]: any
 }
 
 export interface State {
@@ -34,17 +35,33 @@ const logGeneral: LogGeneral = (message, ...data) => {
 	console.log(`redux-cache: ${message}`, ...data)
 }
 
+export interface UpdateStateArgs {
+	reducersToInvalidate: string[],
+	accessStrategy: AccessStrategy,
+	invalidateStrategy: InvalidateStrategy,
+	currentState: State,
+	config: CacheEnhancerConfig
+}
+
 /**
  * This fn will handle invalidating the reducers you specify. It returns the updated state with the cache
  * values set to null.
- * 
+ *
  * @param reducersToInvalidate List of reducers to invalidate
  * @param currentState The current and already reduced state.
  * @param [config={}] Configuration options
  * @param [config.log=false] Whether or not to output log information. Useful for debugging.
  * @param [config.cacheKey=DEFAULT_KEY] The cache key to use instead of the DEFAULT_KEY
  */
-export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGeneral) => (reducersToInvalidate: string[], currentState: State, config: CacheEnhancerConfig): State => {
+export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGeneral) => (args: UpdateStateArgs): State => {
+	const {
+		reducersToInvalidate,
+		accessStrategy,
+		invalidateStrategy,
+		currentState,
+		config
+	} = args;
+
 	const { log = false, cacheKey = DEFAULT_KEY } = config;
 	const newState = { ...currentState };
 	const stateKeys = Object.keys(newState);
@@ -59,7 +76,7 @@ export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGenera
 
 	// We filter those existing reducers down to those which actually have a the cache key.
 	const cacheEnabledReducers = matchedReducers.filter(reducerKey => {
-		return newState && newState[reducerKey] && newState[reducerKey][cacheKey];
+		return accessStrategy(newState, reducerKey, cacheKey)
 	});
 	if (log) { logResultFn("cacheEnabledReducers", cacheEnabledReducers); }
 
@@ -68,10 +85,7 @@ export const buildUpdateState = (logResultFn: LogResult, logGeneralFn: LogGenera
 	const updatedState = cacheEnabledReducers.reduce((prev, reducerKey) => {
 		return {
 			...prev,
-			[reducerKey]: {
-				...prev[reducerKey],
-				[cacheKey]: null
-			}
+			...invalidateStrategy(newState, reducerKey, cacheKey)
 		}
 	}, newState);
 
@@ -92,13 +106,22 @@ export type LiftReducer = (reducer: Reducer, config: CacheEnhancerConfig) => (st
 
 export const liftReducer: LiftReducer = (reducer, config) => (state, action) => {
 	const currentState = reducer(state, action);
-	
+
 	if (action.type !== INVALIDATE_CACHE) {
 		return currentState;
 	}
 
 	const reducersToInvalidate = action.payload && action.payload.reducers || [];
-	const newState = updateState(reducersToInvalidate, currentState, config);
+	const accessStrategy = action.payload && action.payload.accessStrategy;
+	const invalidateStrategy = action.payload && action.payload.invalidateStrategy;
+
+	const newState = updateState({
+		reducersToInvalidate,
+		accessStrategy,
+		invalidateStrategy,
+		currentState,
+		config
+	});
 
 	return newState;
 }
@@ -110,7 +133,7 @@ export const buildCacheEnhancer = (liftReducerFn: LiftReducer) => (config: Cache
 	return (createStore) => (rootReducer: Reducer, initialState: State, enhancer: Function): Store => {
 		const store = createStore(liftReducerFn(rootReducer, config), initialState, enhancer);
 
-		return { 
+		return {
 			...store,
 			replaceReducer: (reducer) => {
 				return store.replaceReducer(liftReducerFn(reducer, config));
